@@ -21,13 +21,14 @@
 
 
 module main(
-    input wire clk,
-    input wire rst_n,
-    output wire [7:0] AN,
-    output wire [7:0] CT
+    input wire logic clk,
+    input wire logic rst_n,
+    output wire logic [7:0] AN,
+    output wire logic [7:0] CT
 );
     //    [num of rows][num of bits (cols) / row]
-    var logic [2:0][7:0] segment_value  = {8, 9, 10, 11, 12, 13, 14, 15};
+    var logic [3:0] segment_value [7:0]  = {4'd15, 4'd15, 4'd15, 4'd15, 4'd15, 4'd15, 4'd15, 4'd15};
+    var logic [31:0] reg_result;
     
     SevenSegDisplay seg_inst(
         .clk(clk),
@@ -36,5 +37,16 @@ module main(
         .AN(AN),
         .CT(CT)
     );
+
+    RV_CPU cpu(
+        .clk(clk),
+        .rst_n(rst_n),
+        .reg_result(reg_result)
+    );
+
+    always @(posedge clk, negedge rst_n) begin
+        if (!rst_n) segment_value[0] <= 4'd15;
+        else segment_value[0] <= reg_result[7:0];
+    end
     
 endmodule

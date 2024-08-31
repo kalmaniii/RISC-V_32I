@@ -23,7 +23,7 @@ module SevenSegDisplay #(parameter FREQUENCY = 60)
 (
     input wire clk,
     input wire rst_n,
-    input var logic [2:0][7:0] value,
+    input var logic [3:0] value [7:0],
     output wire [7:0] AN,
     output wire [7:0] CT
 );

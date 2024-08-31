@@ -18,6 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
+`include "isa.sv"
 
 module InstructionMem(
     input var logic [31:0] pc,
@@ -25,9 +26,9 @@ module InstructionMem(
 );
 
     var logic [31:0][31:0] instruction_memory;
+    
     initial begin
-        // all elemets should be init to 0 (AKA a NOP)
-        instruction_memory[100] <= `ADDI;
+        foreach (instruction_memory[i]) instruction_memory[i] <= `ADD;
     end
 
     assign instruction = instruction_memory[pc];

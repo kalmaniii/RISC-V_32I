@@ -17,12 +17,17 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`define OPCODE_IMM = 7'b0000000;
-`define RD = 5'b00000; 
-`define FUNCT3_ADDI = 3'b000;
-`define RS1 = 5'b00000;
-`define IMM = 12'b000000000000;
+`ifndef ISA_SV
+`define ISA_SV
 
-`define NOP {`IMM, `RS1, `FUNCT3_ADDI, `RD, `OPCODE_IMM};
+// R-TYPE
+`define OPCODE_R 7'b011011  // [6:0]
+`define RD_R 5'b00001       // [11:7] -- results will write to register 1
+`define FUNCT3_R 3'b000     // [14:12] -- ADD inst
+`define RS1_R 5'b00010      // [19:15] -- source is register 2
+`define RS2_R 5'b00011      // [24:20] -- source is register 3
+`define FUNCT7_R 7'b0000000 // [31:25] -- ADD inst
 
-`define ADDI {12'b000000000001, 5'b00001, 3'b000, 5'b00010, 7'b0000001};
+`define ADD {`FUNCT7_R, `RS2_R, `RS1_R, `FUNCT3_R, `RD_R, `OPCODE_R}
+
+`endif

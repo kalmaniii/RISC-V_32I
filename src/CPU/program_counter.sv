@@ -20,9 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module ProgramCounter(
-    input wire clk,
-    input wire rst_n,
-    input wire pc_src,
+    input wire logic clk,
+    input wire logic rst_n,
+    input var logic pc_src,
     input var logic [31:0] branch_address,
     output var logic [31:0] pc
 );
@@ -31,8 +31,8 @@ module ProgramCounter(
         if (!rst_n) pc <= 0;
         else begin
             if (pc_src) pc <= (branch_address << 2);
-            else pc <= pc + 4;
+            else pc <= pc + 1;
         end
-    end
+    end: driving_program_counter
 
 endmodule

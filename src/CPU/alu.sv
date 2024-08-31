@@ -20,7 +20,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module ALU(
-
+    input var logic [31:0] reg_a,
+    input var logic [31:0] reg_rdx,
+    output var logic [31:0] result
 );
+
+    always_comb begin
+        result = reg_a + reg_rdx;
+    end
 
 endmodule
