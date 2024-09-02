@@ -75,7 +75,7 @@ module ControlSignals(
                     `FUNCT3_ADDI: alu_operation = `ALU_OPERATIONS_ADDI;
                     `FUNCT3_ORI: alu_operation = `ALU_OPERATIONS_ORI;
                     `FUNCT3_XORI: alu_operation = `ALU_OPERATIONS_XORI;
-                    `FUNCT3_ANDI: alu_operation = `ALU_OPERATIONS_ADDI;
+                    `FUNCT3_ANDI: alu_operation = `ALU_OPERATIONS_ANDI;
                     `FUNCT3_SLLI: alu_operation = `ALU_OPERATIONS_SLLI;
                     `FUNCT3_SRLI,
                     `FUNCT3_SRAI: begin
