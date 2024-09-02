@@ -27,12 +27,12 @@ module ProgramCounter(
     output var logic [31:0] pc
 );
 
-    always @(posedge clk, negedge rst_n) begin: driving_program_counter
+    always @(posedge clk, negedge rst_n) begin
         if (!rst_n) pc <= 0;
         else begin
             if (pc_src) pc <= (branch_address << 2);
-            else pc <= pc + 1;
+            else pc <= pc + 4;
         end
-    end: driving_program_counter
+    end
 
 endmodule

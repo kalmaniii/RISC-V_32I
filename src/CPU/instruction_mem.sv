@@ -21,16 +21,23 @@
 `include "isa.sv"
 
 module InstructionMem(
+    input wire logic clk,
+    input wire logic rst_n,
     input var logic [31:0] pc,
     output var logic [31:0] instruction
 );
 
-    var logic [31:0][31:0] instruction_memory;
+    (* ram_style = "block" *) var logic [7:0] instruction_memory [15:0];
     
     initial begin
-        foreach (instruction_memory[i]) instruction_memory[i] <= `ADD;
+        $readmemh("instructions.mem", instruction_memory); // Load BRAM from .mem file
     end
 
-    assign instruction = instruction_memory[pc];
+    assign instruction = {
+        instruction_memory[{pc[3:2], 2'b11}], 
+        instruction_memory[{pc[3:2], 2'b10}], 
+        instruction_memory[{pc[3:2], 2'b01}], 
+        instruction_memory[{pc[3:2], 2'b00}]
+    };
 
 endmodule

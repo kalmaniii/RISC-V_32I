@@ -26,9 +26,9 @@ module main(
     output wire logic [7:0] AN,
     output wire logic [7:0] CT
 );
-    //    [num of rows][num of bits (cols) / row]
+    //    [num of bits (cols) / row][num of rows]
     var logic [3:0] segment_value [7:0]  = {4'd15, 4'd15, 4'd15, 4'd15, 4'd15, 4'd15, 4'd15, 4'd15};
-    var logic [31:0] reg_result;
+    var logic [31:0] reg_destination;
     
     SevenSegDisplay seg_inst(
         .clk(clk),
@@ -41,12 +41,12 @@ module main(
     RV_CPU cpu(
         .clk(clk),
         .rst_n(rst_n),
-        .reg_result(reg_result)
+        .reg_destination(reg_destination)
     );
 
     always @(posedge clk, negedge rst_n) begin
         if (!rst_n) segment_value[0] <= 4'd15;
-        else segment_value[0] <= reg_result[7:0];
+        else segment_value[0] <= reg_destination[7:0];
     end
     
 endmodule
