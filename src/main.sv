@@ -28,7 +28,7 @@ module main(
 );
     //    [num of bits (cols) / row][num of rows]
     var logic [3:0] segment_value [7:0]  = {4'd15, 4'd15, 4'd15, 4'd15, 4'd15, 4'd15, 4'd15, 4'd15};
-    var logic [31:0] reg_destination;
+    var logic [31:0] writeback_result;
     
     SevenSegDisplay seg_inst(
         .clk(clk),
@@ -41,12 +41,12 @@ module main(
     RV_CPU cpu(
         .clk(clk),
         .rst_n(rst_n),
-        .reg_destination(reg_destination)
+        .writeback_result(writeback_result)
     );
 
     always @(posedge clk, negedge rst_n) begin
         if (!rst_n) segment_value[0] <= 4'd15;
-        else segment_value[0] <= reg_destination[7:0];
+        else segment_value[0] <= writeback_result[7:0];
     end
     
 endmodule

@@ -25,8 +25,8 @@ module RegisterFile(
     input var logic regfile_wr_en,
     input var logic [31:0]  instruction,
     input var logic [31:0]  reg_wr_data,
-    output var logic [31:0] reg_s1_data,
-    output var logic [31:0] reg_s2_data
+    output var logic [31:0] reg_data_a,
+    output var logic [31:0] reg_data_b
 );
     var logic [4:0] reg_wr_addr;
     var logic [4:0] reg_s1_addr;
@@ -59,8 +59,8 @@ module RegisterFile(
 
     // Read operation
     always_comb begin
-        reg_s1_data = register_file[reg_s1_addr];
-        reg_s2_data = register_file[reg_s2_addr]; 
+        reg_data_a = register_file[reg_s1_addr];
+        reg_data_b = register_file[reg_s2_addr]; 
     end
     
 

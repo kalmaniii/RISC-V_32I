@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`include "isa.sv"
+`include "../common/isa.sv"
 
 module InstructionMem(
     input wire logic clk,
@@ -27,17 +27,18 @@ module InstructionMem(
     output var logic [31:0] instruction
 );
 
-    (* ram_style = "block" *) var logic [7:0] instruction_memory [31:0];
+    (* ram_style = "block" *) var logic [31:0] instruction_memory [7:0];
     
     initial begin
-        $readmemh("instructions.mem", instruction_memory); // Load BRAM from .mem file
+        $readmemh("C:/Users/sanch/Documents/FPGA_Programming/RISC-V_32I/src/instructions.mem", instruction_memory); // Load BRAM from .mem file
     end
 
-    assign instruction = {
-        instruction_memory[{pc[4:2], 2'b11}], 
-        instruction_memory[{pc[4:2], 2'b10}], 
-        instruction_memory[{pc[4:2], 2'b01}], 
-        instruction_memory[{pc[4:2], 2'b00}]
-    };
+    assign instruction = instruction_memory[pc[2:0]];
+    // assign instruction = {
+    //     instruction_memory[{pc[4:2], 2'b11}], 
+    //     instruction_memory[{pc[4:2], 2'b10}], 
+    //     instruction_memory[{pc[4:2], 2'b01}], 
+    //     instruction_memory[{pc[4:2], 2'b00}]
+    // };
 
 endmodule

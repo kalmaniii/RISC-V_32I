@@ -22,7 +22,7 @@
 module ProgramCounter(
     input wire logic clk,
     input wire logic rst_n,
-    input var logic pc_src,
+    input var logic branch_select,
     input var logic [31:0] branch_address,
     output var logic [31:0] pc
 );
@@ -30,8 +30,8 @@ module ProgramCounter(
     always @(posedge clk, negedge rst_n) begin
         if (!rst_n) pc <= 0;
         else begin
-            if (pc_src) pc <= (branch_address << 2);
-            else pc <= pc + 4;
+            if (branch_select) pc <= (branch_address << 2);
+            else pc <= pc + 1;
         end
     end
 
