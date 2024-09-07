@@ -16,7 +16,7 @@
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+// 0000_0000_0010_0000_1000_1000_0110_0011
 //////////////////////////////////////////////////////////////////////////////////
 `include "../common/isa.svh"
 
@@ -35,7 +35,7 @@ module ImmGen(
             `OPCODE_ECALL,
             `OPCODE_EBREAK: imm_value = {{20{instruction[31]}}, instruction[31:20]};
             `OPCODE_STORE:  imm_value = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]};
-            `OPCODE_BRANCH: imm_value = {{20{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8], 1'b0};
+            `OPCODE_BRANCH: imm_value = {{21{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8]};
             `OPCODE_LUI,
             `OPCODE_AUIPC: imm_value = {instruction[31:12], 12'b0};
             `OPCODE_JAL: imm_value = {{11{instruction[31]}}, instruction[31], instruction[19:12], instruction[20], instruction[30:21], 1'b0};

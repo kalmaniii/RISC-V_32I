@@ -27,7 +27,7 @@ module InstructionMem(
     output var logic [31:0] instruction
 );
 
-    (* ram_style = "block" *) var logic [31:0] instruction_memory [7:0];
+    (* ram_style = "block" *) var logic [7:0] instruction_memory [31:0];
     
     initial begin
         $readmemh("C:/Users/sanch/Documents/FPGA_Programming/RISC-V_32I/src/instructions.mem", instruction_memory); // Load BRAM from .mem file
