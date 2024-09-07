@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`include "../common/isa.sv"
+`include "../common/isa.svh"
 
 module ALUControl(
     input var logic [31:0] instruction,
@@ -67,7 +67,6 @@ module ALUControl(
                 endcase
             end: LOAD
 
-            // `ALU_SELECT_STORE:
             `ALU_SELECT_STORE: begin: STORE
                 unique case(instruction[`INDEX_FUNCT3])
                     `FUNCT3_SB: alu_operation = `ALU_OPERATIONS_SB; 
@@ -76,6 +75,18 @@ module ALUControl(
                     default: alu_operation = `ALU_OPERATIONS_NOP;
                 endcase
             end: STORE
+
+            `ALU_SELECT_BRANCH: begin: BRANCH
+                unique case(instruction[`INDEX_FUNCT3])
+                    `FUNCT3_BEQ: alu_operation = `ALU_OPERATIONS_BEQ;
+                    `FUNCT3_BNE: alu_operation = `ALU_OPERATIONS_BNE;
+                    `FUNCT3_BLT: alu_operation = `ALU_OPERATIONS_BLT;
+                    `FUNCT3_BGE: alu_operation = `ALU_OPERATIONS_BGE;
+                    `FUNCT3_BLTU: alu_operation = `ALU_OPERATIONS_BLTU;
+                    `FUNCT3_BGEU: alu_operation = `ALU_OPERATIONS_BGEU;
+                    default: alu_operation = `ALU_OPERATIONS_NOP;
+                endcase
+            end: BRANCH
 
             // `ALU_SELECT_NOP
             default: alu_operation = `ALU_OPERATIONS_NOP;

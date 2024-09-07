@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`include "../common/isa.sv"
+`include "../common/isa.svh"
 
 module ImmGen(
     input wire logic clk,
@@ -31,20 +31,19 @@ module ImmGen(
         unique case(instruction[`INDEX_OPCODE])
             `OPCODE_ALUI,
             `OPCODE_LOAD,
-            `OPCODE_JULR,
+            `OPCODE_JALR,
             `OPCODE_ECALL,
             `OPCODE_EBREAK: imm_value = {{20{instruction[31]}}, instruction[31:20]};
             `OPCODE_STORE:  imm_value = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]};
             `OPCODE_BRANCH: imm_value = {{20{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8], 1'b0};
             `OPCODE_LUI,
-            `OPCODE_AUILPC: imm_value = {instruction[31:12], 12'b0};
-            `OPCODE_JUL: imm_value = {{11{instruction[31]}}, instruction[31], instruction[19:12], instruction[20], instruction[30:21], 1'b0};
+            `OPCODE_AUIPC: imm_value = {instruction[31:12], 12'b0};
+            `OPCODE_JAL: imm_value = {{11{instruction[31]}}, instruction[31], instruction[19:12], instruction[20], instruction[30:21], 1'b0};
             default: begin
                 imm_value = 0;
             end
         endcase
     end
         
-    
 
 endmodule

@@ -18,15 +18,17 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`include "../common/isa.sv"
+`include "../common/isa.svh"
 
 module ALU(
     input wire logic clk,
     input wire logic rst_n,
+    input var logic is_branch_instruction,
     input var logic [7:0] alu_operation,
     input var logic [31:0] operand1,
     input var logic [31:0] operand2,
-    output var logic [31:0] alu_result
+    output var logic [31:0] alu_result,
+    output var logic branch_taken
 );
 
     always_comb begin
@@ -57,6 +59,14 @@ module ALU(
             `ALU_OPERATIONS_SB, 
             `ALU_OPERATIONS_SH,
             `ALU_OPERATIONS_SW: alu_result = operand1 + operand2;
+
+            // BRANCH
+            `ALU_OPERATIONS_BEQ: branch_taken = is_branch_instruction && (operand1 == operand2);
+            `ALU_OPERATIONS_BNE: branch_taken = is_branch_instruction && (operand1 != operand2);
+            `ALU_OPERATIONS_BLT: branch_taken = is_branch_instruction && (operand1 < operand2);
+            `ALU_OPERATIONS_BGE: branch_taken = is_branch_instruction && (operand1 >= operand2);
+            `ALU_OPERATIONS_BLTU: branch_taken = is_branch_instruction && (operand1 < operand2);
+            `ALU_OPERATIONS_BGEU: branch_taken = is_branch_instruction && (operand1 >= operand2);
             
             // `ALU_OPERATIONS_NOP,
             default: alu_result = alu_result;

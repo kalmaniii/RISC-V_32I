@@ -18,14 +18,14 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`include "common/isa.sv"
+`include "common/isa.svh"
 
 module ControlSignals(
     input wire logic clk,
     input wire logic rst_n,
     input var logic [6:0] opcode,
     output var logic regfile_wr_en,
-    // output var logic branch_select,
+    output var logic is_branch_instruction,
     output var logic mem_data_select,
     output var logic mem_rd_en,
     output var logic mem_wr_en,
@@ -41,6 +41,7 @@ module ControlSignals(
                 mem_data_select = 0;
                 mem_rd_en = 0;
                 mem_wr_en = 0;
+                is_branch_instruction = 0;
                 alu_select = `ALU_SELECT_ARITHMETIC;
             end: ALU
 
@@ -50,6 +51,7 @@ module ControlSignals(
                 mem_data_select = 0;
                 mem_rd_en = 0;
                 mem_wr_en = 0;
+                is_branch_instruction = 0;
                 alu_select = `ALU_SELECT_ARITHMETIC;
             end: ALUI
 
@@ -59,6 +61,7 @@ module ControlSignals(
                 mem_data_select = 1;
                 mem_rd_en = 1;
                 mem_wr_en = 0;
+                is_branch_instruction = 0;
                 alu_select = `ALU_SELECT_LOAD;
             end: LOAD
 
@@ -68,8 +71,19 @@ module ControlSignals(
                 mem_data_select = 0;
                 mem_rd_en = 0;
                 mem_wr_en = 1;
+                is_branch_instruction = 0;
                 alu_select = `ALU_SELECT_STORE;
             end: STORE
+
+            `OPCODE_BRANCH: begin: BRANCH
+                regfile_wr_en = 0;
+                reg_b_select = 1;
+                mem_data_select = 0;
+                mem_rd_en = 0;
+                mem_wr_en = 0;
+                is_branch_instruction = 1;
+                alu_select = `ALU_SELECT_BRANCH;
+            end: BRANCH
 
             default: begin
                 regfile_wr_en = 0;
@@ -77,6 +91,7 @@ module ControlSignals(
                 mem_data_select = 0;
                 mem_rd_en = 0;
                 mem_wr_en = 0;
+                is_branch_instruction = 0;
                 alu_select = `ALU_SELECT_NOP;
             end
         endcase

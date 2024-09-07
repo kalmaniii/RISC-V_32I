@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`include "../common/isa.sv"
+`include "../common/isa.svh"
 
 module DataMem(
     input wire logic clk,

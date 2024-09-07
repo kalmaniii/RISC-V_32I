@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`include "core/common/isa.sv"
+`include "core/common/isa.svh"
 
 module RV_CPU(
     input wire logic clk,
@@ -29,15 +29,14 @@ module RV_CPU(
     /**** internal logic ****/
     // program counter
     var logic [31:0] pc;
-    var logic [31:0] branch_address = 0;
-    var logic branch_select = 0;
+    var logic branch_taken = 0;
 
     // instruction memory
     var logic [31:0] instruction;
     
     // control signals
     var logic regfile_wr_en;
-    // var logic branch_select;
+    var logic is_branch_instruction;
     var logic mem_data_select;
     var logic mem_rd_en;
     var logic mem_wr_en;
@@ -57,8 +56,8 @@ module RV_CPU(
     ProgramCounter program_counter(
         .clk(clk),
         .rst_n(rst_n),
-        .branch_select(branch_select),
-        .branch_address(branch_address),
+        .branch_taken(branch_taken),
+        .branch_address(imm_value),
         .pc(pc)
     );
 
@@ -74,7 +73,7 @@ module RV_CPU(
         .rst_n(rst_n),
         .opcode(instruction[6:0]),
         .regfile_wr_en(regfile_wr_en),
-        // .branch_select(),
+        .is_branch_instruction(is_branch_instruction),
         .mem_data_select(mem_data_select),
         .mem_rd_en(mem_rd_en),
         .mem_wr_en(mem_wr_en),
@@ -115,10 +114,12 @@ module RV_CPU(
     ALU alu(
         .clk(clk),
         .rst_n(rst_n),
+        .is_branch_instruction(is_branch_instruction),
         .alu_operation(alu_operation),
         .operand1(reg_data_a),
         .operand2(reg_data_x),
-        .alu_result(alu_result)
+        .alu_result(alu_result),
+        .branch_taken(branch_taken)
     );
 
     DataMem data_mem(
