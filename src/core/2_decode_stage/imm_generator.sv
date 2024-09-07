@@ -37,8 +37,8 @@ module ImmGen(
             `OPCODE_STORE:  imm_value = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]};
             `OPCODE_BRANCH: imm_value = {{21{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8]};
             `OPCODE_LUI,
-            `OPCODE_AUIPC: imm_value = {instruction[31:12], 12'b0};
-            `OPCODE_JAL: imm_value = {{11{instruction[31]}}, instruction[31], instruction[19:12], instruction[20], instruction[30:21], 1'b0};
+            `OPCODE_AUIPC: imm_value = {{12{instruction[31]}}, instruction[31:12]};
+            `OPCODE_JAL: imm_value = {{12{instruction[31]}}, instruction[31], instruction[19:12], instruction[20], instruction[30:21]};
             default: begin
                 imm_value = 0;
             end

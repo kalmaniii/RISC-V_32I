@@ -26,6 +26,7 @@ module ControlSignals(
     input var logic [6:0] opcode,
     output var logic regfile_wr_en,
     output var logic is_branch_instruction,
+    output var logic is_jalr_instruction,
     output var logic mem_data_select,
     output var logic mem_rd_en,
     output var logic mem_wr_en,
@@ -34,6 +35,7 @@ module ControlSignals(
 );
     
     always_comb begin
+        is_jalr_instruction = 0;
         unique case (opcode)
             `OPCODE_ALU: begin: ALU
                 regfile_wr_en = 1;
@@ -84,6 +86,47 @@ module ControlSignals(
                 is_branch_instruction = 1;
                 alu_select = `ALU_SELECT_BRANCH;
             end: BRANCH
+
+            `OPCODE_JAL: begin: JAL
+                regfile_wr_en = 1;
+                reg_b_select = 1;
+                mem_data_select = 0;
+                mem_rd_en = 0;
+                mem_wr_en = 0;
+                is_branch_instruction = 1;
+                alu_select = `ALU_SELECT_JAL;
+            end: JAL
+
+            `OPCODE_JALR: begin: JALR
+                regfile_wr_en = 1;
+                reg_b_select = 1;
+                mem_data_select = 0;
+                mem_rd_en = 0;
+                mem_wr_en = 0;
+                is_branch_instruction = 0;
+                is_jalr_instruction = 1;
+                alu_select = `ALU_SELECT_JALR;
+            end: JALR
+
+            `OPCODE_LUI: begin: LUI
+                regfile_wr_en = 1;
+                reg_b_select = 1;
+                mem_data_select = 0;
+                mem_rd_en = 0;
+                mem_wr_en = 0;
+                is_branch_instruction = 1;
+                alu_select = `ALU_SELECT_LUI;
+            end: LUI
+
+            `OPCODE_AUIPC: begin: AUIPC
+                regfile_wr_en = 1;
+                reg_b_select = 1;
+                mem_data_select = 0;
+                mem_rd_en = 0;
+                mem_wr_en = 0;
+                is_branch_instruction = 1;
+                alu_select = `ALU_SELECT_AUILPC;
+            end: AUIPC
 
             default: begin
                 regfile_wr_en = 0;

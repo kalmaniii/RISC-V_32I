@@ -29,6 +29,7 @@ module RVCPU(
     // program counter
     var logic [31:0] pc;
     var logic branch_taken = 0;
+    var logic [31:0] jalr_addrss;
 
     // instruction memory
     var logic [31:0] instruction;
@@ -36,6 +37,7 @@ module RVCPU(
     // control signals
     var logic regfile_wr_en;
     var logic is_branch_instruction;
+    var logic is_jalr_instruction = 0;
     var logic mem_data_select;
     var logic mem_rd_en;
     var logic mem_wr_en;
@@ -52,6 +54,9 @@ module RVCPU(
     var logic [31:0] reg_data_x;
     var logic [31:0] alu_result;
 
+    // memory stage
+    var logic [31:0] memory_data;
+
     // write back
     var logic [31:0] writeback_result;
     
@@ -60,6 +65,8 @@ module RVCPU(
         .rst_n(rst_n),
         .branch_taken(branch_taken),
         .branch_address(imm_value),
+        .is_jalr_instruction(is_jalr_instruction),
+        .jalr_addrss(jalr_addrss),
         .pc(pc)
     );
 
@@ -116,24 +123,33 @@ module RVCPU(
     ALU alu(
         .clk(clk),
         .rst_n(rst_n),
+        .pc(pc),
         .is_branch_instruction(is_branch_instruction),
         .alu_operation(alu_operation),
         .operand1(reg_data_a),
         .operand2(reg_data_x),
         .alu_result(alu_result),
-        .branch_taken(branch_taken)
+        .branch_taken(branch_taken),
+        .is_jalr_instruction(is_jalr_instruction),
+        .jalr_addrss(jalr_addrss)
     );
 
     DataMem data_mem(
         .clk(clk),
         .mem_rd_en(mem_rd_en),
         .mem_wr_en(mem_wr_en),
-        .mem_data_select(mem_data_select),
         .alu_operation(alu_operation),
         .reg_data_b(reg_data_b),
         .alu_result(alu_result),
-        .writeback_result(writeback_result)
+        .memory_data(memory_data)
     );
 
+    WriteBack write_back(
+        .mem_data_select(mem_data_select),
+        .alu_operation(alu_operation),
+        .alu_result(alu_result),
+        .data_result(memory_data),
+        .writeback_result(writeback_result)
+    );
     
 endmodule

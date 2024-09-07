@@ -23,17 +23,21 @@
 module ALU(
     input wire logic clk,
     input wire logic rst_n,
+    input var logic [31:0] pc,
     input var logic is_branch_instruction,
     input var logic [7:0] alu_operation,
     input var logic [31:0] operand1,
     input var logic [31:0] operand2,
     output var logic [31:0] alu_result,
-    output var logic branch_taken
+    output var logic branch_taken,
+    output var logic is_jalr_instruction,
+    output var logic [31:0] jalr_addrss
 );
 
     always_comb begin
         alu_result = 0;
         branch_taken = 0;
+        jalr_addrss = 0;
         
         unique case(alu_operation)
             // ARITHMETIC
@@ -70,7 +74,25 @@ module ALU(
             `ALU_OPERATIONS_BGE: branch_taken = is_branch_instruction && (operand1 >= operand2);
             `ALU_OPERATIONS_BLTU: branch_taken = is_branch_instruction && (operand1 < operand2);
             `ALU_OPERATIONS_BGEU: branch_taken = is_branch_instruction && (operand1 >= operand2);
+
+            // JAL
+            `ALU_OPERATIONS_JAL: begin 
+                branch_taken = 1;
+                alu_result = pc + 4;
+            end
+
+            // JALR
+            `ALU_OPERATIONS_JALR: begin 
+                jalr_addrss = operand1 + operand2;
+                alu_result = pc + 4;
+            end
             
+            // LUI
+            `ALU_OPERATIONS_LUI: alu_result = operand2 << 12;
+
+            // AUIPC
+            `ALU_OPERATIONS_AUIPC: alu_result = (pc + (operand2 << 12));
+
             // `ALU_OPERATIONS_NOP,
             default: begin 
                 alu_result = 0;

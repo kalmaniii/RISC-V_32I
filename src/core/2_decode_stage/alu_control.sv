@@ -88,6 +88,11 @@ module ALUControl(
                 endcase
             end: BRANCH
 
+            `ALU_SELECT_JAL: alu_operation = `ALU_OPERATIONS_JAL;
+            `ALU_SELECT_JALR: alu_operation = `ALU_OPERATIONS_JALR;
+            `ALU_SELECT_LUI: alu_operation = `ALU_OPERATIONS_LUI;
+            `ALU_SELECT_AUILPC: alu_operation = `ALU_OPERATIONS_AUIPC;
+
             // `ALU_SELECT_NOP
             default: alu_operation = `ALU_OPERATIONS_NOP;
         endcase

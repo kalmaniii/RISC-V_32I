@@ -103,8 +103,8 @@
 `define ALU_SELECT_LOAD       4'h2
 `define ALU_SELECT_STORE      4'h3
 `define ALU_SELECT_BRANCH     4'h4
-`define ALU_SELECT_JUL        4'h5
-`define ALU_SELECT_JULR       4'h6
+`define ALU_SELECT_JAL        4'h5
+`define ALU_SELECT_JALR       4'h6
 `define ALU_SELECT_LUI        4'h7
 `define ALU_SELECT_AUILPC     4'h8
 `define ALU_SELECT_ECALL      4'h9
