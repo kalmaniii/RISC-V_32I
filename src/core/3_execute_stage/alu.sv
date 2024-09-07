@@ -32,6 +32,9 @@ module ALU(
 );
 
     always_comb begin
+        alu_result = 0;
+        branch_taken = 0;
+        
         unique case(alu_operation)
             // ARITHMETIC
             `ALU_OPERATIONS_SUB: alu_result = operand1 - operand2;
@@ -69,7 +72,10 @@ module ALU(
             `ALU_OPERATIONS_BGEU: branch_taken = is_branch_instruction && (operand1 >= operand2);
             
             // `ALU_OPERATIONS_NOP,
-            default: alu_result = alu_result;
+            default: begin 
+                alu_result = 0;
+                branch_taken = 0;
+            end
         endcase
     end
 
