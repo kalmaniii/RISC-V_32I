@@ -20,10 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 `include "core/common/isa.svh"
 
-module RV_CPU(
+module RVCPU(
     input wire logic clk,
-    input wire logic rst_n,
-    output var logic [31:0] writeback_result
+    input wire logic rst_n
 );
 
     /**** internal logic ****/
@@ -52,6 +51,9 @@ module RV_CPU(
     var logic [31:0] reg_data_b;
     var logic [31:0] reg_data_x;
     var logic [31:0] alu_result;
+
+    // write back
+    var logic [31:0] writeback_result;
     
     ProgramCounter program_counter(
         .clk(clk),

@@ -19,11 +19,9 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module sim_cpu();
+module SimulateCPU();
     logic clk = 0;
     logic rst = 1;
-    wire logic [7:0] AN;
-    wire logic [7:0] CT;
     
     // Clock definition
     localparam CLK_PERIOD = 10; // 100 Mhz (counter is in ns)
@@ -41,11 +39,9 @@ module sim_cpu();
         rst = 0;
     end
 
-    main main_inst(
+    RVCPU cpu_inst(
         .clk(clk),
-        .rst_n(~rst),
-        .AN(AN),
-        .CT(CT)
+        .rst_n(~rst)
     );
 
 endmodule
