@@ -29,31 +29,44 @@ module ALUControl(
     always_comb begin
         unique case(alu_select)
             `ALU_SELECT_ARITHMETIC: begin: ARITHMETIC
-                unique case(instruction[`INDEX_FUNCT3])
-                    `FUNCT3_SUB,
-                    `FUNCT3_ADD: begin
-                        if (instruction[`INDEX_OPCODE] == `OPCODE_ALUI)
-                            alu_operation = `ALU_OPERATIONS_ADD;
-                        else if (instruction[`INDEX_FUNCT7] == `FUNCT7_ADD)
-                            alu_operation = `ALU_OPERATIONS_ADD;
-                        else
-                            alu_operation = `ALU_OPERATIONS_SUB;
-                    end
-                    `FUNCT3_OR: alu_operation = `ALU_OPERATIONS_OR;
-                    `FUNCT3_XOR: alu_operation = `ALU_OPERATIONS_XOR;
-                    `FUNCT3_AND: alu_operation = `ALU_OPERATIONS_AND;
-                    `FUNCT3_SLL: alu_operation = `ALU_OPERATIONS_SLL;
-                    `FUNCT3_SRL,
-                    `FUNCT3_SRA: begin
-                        if (instruction[`INDEX_FUNCT7] == `FUNCT7_SRL)
-                            alu_operation = `ALU_OPERATIONS_SRL;
-                        else
-                            alu_operation = `ALU_OPERATIONS_SRA;
-                    end
-                    `FUNCT3_SLT: alu_operation = `ALU_OPERATIONS_SLT;
-                    `FUNCT3_SLTU: alu_operation = `ALU_OPERATIONS_SLTU;
-                    default: alu_operation = `ALU_OPERATIONS_NOP;
-                endcase
+                if (instruction[`INDEX_FUNCT7] == `FUNCT7_MULTIPLY)
+                    unique case(instruction[`INDEX_FUNCT3])
+                        `FUNCT3_MUL: alu_operation = `ALU_OPERATIONS_MUL;
+                        `FUNCT3_MULH: alu_operation = `ALU_OPERATIONS_MULH;
+                        `FUNCT3_MULSU: alu_operation = `ALU_OPERATIONS_MULSU;
+                        `FUNCT3_MULU: alu_operation = `ALU_OPERATIONS_MULU;
+                        `FUNCT3_DIV: alu_operation = `ALU_OPERATIONS_DIV;
+                        `FUNCT3_DIVU: alu_operation = `ALU_OPERATIONS_DIVU;
+                        `FUNCT3_REM: alu_operation = `ALU_OPERATIONS_REM;
+                        `FUNCT3_REMU: alu_operation = `ALU_OPERATIONS_REMU;
+                        default: alu_operation = `ALU_OPERATIONS_NOP;
+                    endcase
+                else
+                    unique case(instruction[`INDEX_FUNCT3])
+                        `FUNCT3_SUB,
+                        `FUNCT3_ADD: begin
+                            if (instruction[`INDEX_OPCODE] == `OPCODE_ALUI)
+                                alu_operation = `ALU_OPERATIONS_ADD;
+                            else if (instruction[`INDEX_FUNCT7] == `FUNCT7_ADD)
+                                alu_operation = `ALU_OPERATIONS_ADD;
+                            else
+                                alu_operation = `ALU_OPERATIONS_SUB;
+                        end
+                        `FUNCT3_OR: alu_operation = `ALU_OPERATIONS_OR;
+                        `FUNCT3_XOR: alu_operation = `ALU_OPERATIONS_XOR;
+                        `FUNCT3_AND: alu_operation = `ALU_OPERATIONS_AND;
+                        `FUNCT3_SLL: alu_operation = `ALU_OPERATIONS_SLL;
+                        `FUNCT3_SRL,
+                        `FUNCT3_SRA: begin
+                            if (instruction[`INDEX_FUNCT7] == `FUNCT7_SRL)
+                                alu_operation = `ALU_OPERATIONS_SRL;
+                            else
+                                alu_operation = `ALU_OPERATIONS_SRA;
+                        end
+                        `FUNCT3_SLT: alu_operation = `ALU_OPERATIONS_SLT;
+                        `FUNCT3_SLTU: alu_operation = `ALU_OPERATIONS_SLTU;
+                        default: alu_operation = `ALU_OPERATIONS_NOP;
+                    endcase
             end: ARITHMETIC
 
             `ALU_SELECT_LOAD: begin: LOAD

@@ -43,6 +43,16 @@ module ALU(
             // ARITHMETIC
             `ALU_OPERATIONS_SUB: alu_result = operand1 - operand2;
             `ALU_OPERATIONS_ADD: alu_result = operand1 + operand2;
+            
+            // MULTIPLY EXTENSION
+            `ALU_OPERATIONS_MUL: alu_result = (operand1 * operand2);
+            `ALU_OPERATIONS_MULH: alu_result = (operand1 * operand2);
+            `ALU_OPERATIONS_MULSU: alu_result = (operand1 * operand2);
+            `ALU_OPERATIONS_MULU: alu_result = (operand1 * operand2);
+            `ALU_OPERATIONS_DIV: alu_result = (operand1 / operand2);
+            `ALU_OPERATIONS_DIVU: alu_result = (operand1 / operand2);
+            `ALU_OPERATIONS_REM: alu_result = (operand1 % operand2);
+            `ALU_OPERATIONS_REMU: alu_result = (operand1 % operand2);
 
             // LOGICAL
             `ALU_OPERATIONS_OR: alu_result = operand1 | operand2;

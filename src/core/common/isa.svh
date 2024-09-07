@@ -73,28 +73,39 @@
 `define FUNCT3_BGE  3'h5
 `define FUNCT3_BLTU 3'h6
 `define FUNCT3_BGEU 3'h7
+// MULTIPLY EXTENSION
+`define FUNCT3_MUL   3'h0
+`define FUNCT3_MULH  3'h1
+`define FUNCT3_MULSU 3'h2
+`define FUNCT3_MULU  3'h3
+`define FUNCT3_DIV   3'h4
+`define FUNCT3_DIVU  3'h5
+`define FUNCT3_REM   3'h6
+`define FUNCT3_REMU  3'h7
+
 
 
 /****** FUNCT7 ******/
-// arithmetic
-`define FUNCT7_ADD  7'b0000000 // 0x0
-`define FUNCT7_SUB  7'b0100000 // 0x20
-`define FUNCT7_XOR  7'b0000000 // 0x0
-`define FUNCT7_OR   7'b0000000 // 0x0
-`define FUNCT7_AND  7'b0000000 // 0x0
-`define FUNCT7_SLL  7'b0000000 // 0x0
-`define FUNCT7_SRL  7'b0000000 // 0x0
-`define FUNCT7_SRA  7'b0000100 // 0x4
-`define FUNCT7_SLT  7'b0000000 // 0x0
-`define FUNCT7_SLTU 7'b0000000 // 0x0
-// arithmetic imm
-`define FUNCT7_SLLI 7'b0000000 // 0x0
-`define FUNCT7_SRLI 7'b0000000 // 0x0
-`define FUNCT7_SRAI 7'b0100000 // 0x20
-// environment
-`define FUNCT7_ECALL 1'b0
+// ARITHMETIC
+`define FUNCT7_ADD  7'h0
+`define FUNCT7_SUB  7'h20
+`define FUNCT7_XOR  7'h0
+`define FUNCT7_OR   7'h0
+`define FUNCT7_AND  7'h0
+`define FUNCT7_SLL  7'h0
+`define FUNCT7_SRL  7'h0
+`define FUNCT7_SRA  7'h4
+`define FUNCT7_SLT  7'h0
+`define FUNCT7_SLTU 7'h0
+// ARITHMETIC IMM
+`define FUNCT7_SLLI 7'h0
+`define FUNCT7_SRLI 7'h0
+`define FUNCT7_SRAI 7'h20
+// ENVIRONMENT
+`define FUNCT7_ECALL  1'b0
 `define FUNCT7_EBREAK 1'b1
-
+// MULTIPLY EXTENSION
+`define FUNCT7_MULTIPLY 7'h1
 
 
 /****** ALU SELECT ******/
@@ -150,6 +161,15 @@
 // environment
 `define ALU_OPERATIONS_ECALL  8'h1D
 `define ALU_OPERATIONS_EBREAK 8'h1E
+// multiply extension
+`define ALU_OPERATIONS_MUL   8'h1F
+`define ALU_OPERATIONS_MULH  8'h20
+`define ALU_OPERATIONS_MULSU 8'h21
+`define ALU_OPERATIONS_MULU  8'h22
+`define ALU_OPERATIONS_DIV   8'h23
+`define ALU_OPERATIONS_DIVU  8'h24
+`define ALU_OPERATIONS_REM   8'h25
+`define ALU_OPERATIONS_REMU  8'h26
 
 /****** FUNCT INDEX ******/
 `define INDEX_OPCODE 6:0
