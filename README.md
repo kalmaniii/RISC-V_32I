@@ -1,11 +1,11 @@
-# RISC-V_32IM: A RISC-V Single Cycle CPU Implementation
+# RISC-V_32IM: A RISC-V CPU Implementation
 
 ## Project Overview
 
 The **RISC-V_32IM** project represents a comprehensive effort to develop a fully functional single-cycle CPU based on the RISC-V Instruction Set Architecture (ISA). This personal project was started to deepen my understanding of SystemVerilog, computer architecture, and hardware verification techniques while providing hands-on experience in creating production-ready intellectual property (IP) components that meet industry standards.
 
 ## Table of Contents
-- [RISC-V\_32IM: A RISC-V Single Cycle CPU Implementation](#risc-v_32im-a-risc-v-single-cycle-cpu-implementation)
+- [RISC-V\_32IM: A RISC-V CPU Implementation](#risc-v_32im-a-risc-v-cpu-implementation)
   - [Project Overview](#project-overview)
   - [Table of Contents](#table-of-contents)
   - [Objectives](#objectives)
