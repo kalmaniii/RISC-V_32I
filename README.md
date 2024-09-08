@@ -13,7 +13,7 @@ The **RISC-V_32IM** project represents a comprehensive effort to develop a fully
   - [System Features](#system-features)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
+    - [Set Up](#set-up)
   - [Planned Enhancements](#planned-enhancements)
   - [License](#license)
   - [Acknowledgements](#acknowledgements)
@@ -53,7 +53,7 @@ Before you begin, ensure you have the following installed:
 - A SystemVerilog simulator (e.g., ModelSim or Verilator)
 - Git to download repo
 
-### Installation
+### Set Up
 
 1. Clone the repository to your local machine using the following command:
    ```bash

@@ -30,14 +30,13 @@ module ALU(
     input var logic [31:0] operand2,
     output var logic [31:0] alu_result,
     output var logic branch_taken,
-    output var logic is_jalr_instruction,
-    output var logic [31:0] jalr_addrss
+    output var logic [31:0] jalr_address
 );
 
     always_comb begin
         alu_result = 0;
         branch_taken = 0;
-        jalr_addrss = 0;
+        jalr_address = 0;
         
         unique case(alu_operation)
             // ARITHMETIC
@@ -86,14 +85,11 @@ module ALU(
             `ALU_OPERATIONS_BGEU: branch_taken = is_branch_instruction && (operand1 >= operand2);
 
             // JAL
-            `ALU_OPERATIONS_JAL: begin 
-                branch_taken = 1;
-                alu_result = pc + 4;
-            end
+            `ALU_OPERATIONS_JAL: alu_result = pc + 4;
 
             // JALR
             `ALU_OPERATIONS_JALR: begin 
-                jalr_addrss = operand1 + operand2;
+                jalr_address = operand1 + operand2;
                 alu_result = pc + 4;
             end
             
@@ -103,10 +99,11 @@ module ALU(
             // AUIPC
             `ALU_OPERATIONS_AUIPC: alu_result = (pc + (operand2 << 12));
 
-            // `ALU_OPERATIONS_NOP,
-            default: begin 
+            // `ALU_OPERATIONS_NOP
+            default: begin
                 alu_result = 0;
                 branch_taken = 0;
+                jalr_address = 0;
             end
         endcase
     end

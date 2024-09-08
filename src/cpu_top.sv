@@ -28,8 +28,8 @@ module RVCPU(
     /**** internal logic ****/
     // program counter
     var logic [31:0] pc;
-    var logic branch_taken = 0;
-    var logic [31:0] jalr_addrss;
+    var logic [31:0] jalr_address;
+    var logic branch_taken;
 
     // instruction memory
     var logic [31:0] instruction;
@@ -37,7 +37,8 @@ module RVCPU(
     // control signals
     var logic regfile_wr_en;
     var logic is_branch_instruction;
-    var logic is_jalr_instruction = 0;
+    var logic is_jal_instruction;
+    var logic is_jalr_instruction;
     var logic mem_data_select;
     var logic mem_rd_en;
     var logic mem_wr_en;
@@ -65,8 +66,9 @@ module RVCPU(
         .rst_n(rst_n),
         .branch_taken(branch_taken),
         .branch_address(imm_value),
+        .is_jal_instruction(is_jal_instruction),
         .is_jalr_instruction(is_jalr_instruction),
-        .jalr_addrss(jalr_addrss),
+        .jalr_address(jalr_address),
         .pc(pc)
     );
 
@@ -83,6 +85,8 @@ module RVCPU(
         .opcode(instruction[6:0]),
         .regfile_wr_en(regfile_wr_en),
         .is_branch_instruction(is_branch_instruction),
+        .is_jal_instruction(is_jal_instruction),
+        .is_jalr_instruction(is_jalr_instruction),
         .mem_data_select(mem_data_select),
         .mem_rd_en(mem_rd_en),
         .mem_wr_en(mem_wr_en),
@@ -130,8 +134,7 @@ module RVCPU(
         .operand2(reg_data_x),
         .alu_result(alu_result),
         .branch_taken(branch_taken),
-        .is_jalr_instruction(is_jalr_instruction),
-        .jalr_addrss(jalr_addrss)
+        .jalr_address(jalr_address)
     );
 
     DataMem data_mem(
