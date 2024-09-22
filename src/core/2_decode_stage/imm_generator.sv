@@ -1,28 +1,11 @@
+/*
+    file: imm_generator.sv
+    brief: Creates the sign extended value used for various instructions.
+*/
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 08/30/2024 01:45:46 PM
-// Design Name: 
-// Module Name: imm_generator.sv
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 0000_0000_0010_0000_1000_1000_0110_0011
-//////////////////////////////////////////////////////////////////////////////////
 `include "../common/isa.svh"
 
 module ImmGen(
-    input wire logic clk,
-    input wire logic rst_n,
     input var logic [31:0] instruction,
     output var logic [31:0] imm_value
 );

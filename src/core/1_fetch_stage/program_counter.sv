@@ -1,23 +1,8 @@
+/*
+    file: program_counter.sv
+    brief: Resolves the value of the PC.
+*/
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 08/28/2024 01:45:46 PM
-// Design Name: 
-// Module Name: program_counter.sv
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
 module ProgramCounter(
     input wire logic clk,

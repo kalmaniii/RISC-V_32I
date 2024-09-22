@@ -1,22 +1,7 @@
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 08/18/2024 01:51:46 PM
-// Design Name: 
-// Module Name: isa.sv
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+/*
+    file: isa.svh
+    brief: Macros to help improve the readability of the project.
+*/
 `ifndef ISA_SV
 `define ISA_SV
 
@@ -173,10 +158,10 @@
 
 /****** FUNCT INDEX ******/
 `define INDEX_OPCODE 6:0
-
+`define INDEX_RD  11:7
+`define INDEX_RS1 19:15
+`define INDEX_RS2 24:20
 `define INDEX_FUNCT3 14:12
 `define INDEX_FUNCT7 31:25
-
-`define INDEX_IMM_ITYPE 31:20
 
 `endif

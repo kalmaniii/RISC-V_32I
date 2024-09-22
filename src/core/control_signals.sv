@@ -1,28 +1,12 @@
+/*
+    file: control_signals.sv
+    brief: Takes in the current opcode to resolve how to drive the control signals used 
+    throughout other modules in the CPU.
+*/
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 08/30/2024 01:45:46 PM
-// Design Name: 
-// Module Name: control_signals.sv
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 `include "common/isa.svh"
 
 module ControlSignals(
-    input wire logic clk,
-    input wire logic rst_n,
     input var logic [6:0] opcode,
     output var logic regfile_wr_en,
     output var logic is_branch_instruction,
@@ -31,14 +15,14 @@ module ControlSignals(
     output var logic mem_data_select,
     output var logic mem_rd_en,
     output var logic mem_wr_en,
-    output var logic reg_b_select,
+    output var logic reg_select_b,
     output var logic [3:0] alu_select
 );
     
     always_comb begin
         alu_select = `ALU_SELECT_NOP;
         regfile_wr_en = 0;
-        reg_b_select = 0;
+        reg_select_b = 0;
         mem_data_select = 0;
         mem_rd_en = 0;
         mem_wr_en = 0;
@@ -49,7 +33,7 @@ module ControlSignals(
         unique case (opcode)
             `OPCODE_ALU: begin: ALU
                 regfile_wr_en = 1;
-                reg_b_select = 1;
+                reg_select_b = 1;
                 alu_select = `ALU_SELECT_ARITHMETIC;
             end: ALU
 
@@ -71,21 +55,21 @@ module ControlSignals(
             end: STORE
 
             `OPCODE_BRANCH: begin: BRANCH
-                reg_b_select = 1;
+                reg_select_b = 1;
                 is_branch_instruction = 1;
                 alu_select = `ALU_SELECT_BRANCH;
             end: BRANCH
 
             `OPCODE_JAL: begin: JAL
                 regfile_wr_en = 1;
-                reg_b_select = 1;
+                reg_select_b = 1;
                 is_jal_instruction = 1;
                 alu_select = `ALU_SELECT_JAL;
             end: JAL
 
             `OPCODE_JALR: begin: JALR
                 regfile_wr_en = 1;
-                reg_b_select = 1;
+                reg_select_b = 1;
                 is_jalr_instruction = 1;
                 alu_select = `ALU_SELECT_JALR;
             end: JALR
@@ -103,7 +87,7 @@ module ControlSignals(
             default: begin
                 alu_select = `ALU_SELECT_NOP;
                 regfile_wr_en = 0;
-                reg_b_select = 0;
+                reg_select_b = 0;
                 mem_data_select = 0;
                 mem_rd_en = 0;
                 mem_wr_en = 0;

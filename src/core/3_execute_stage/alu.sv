@@ -1,31 +1,14 @@
+/*
+    file: alu.sv
+    brief: Performs the alu operation on the two incoming operand.
+*/
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 08/30/2024 01:45:46 PM
-// Design Name: 
-// Module Name: alu.sv
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 `include "../common/isa.svh"
 
 module ALU(
-    input wire logic clk,
-    input wire logic rst_n,
     input var logic [31:0] pc,
     input var logic is_branch_instruction,
-    input var logic [7:0] alu_operation,
+    input var logic [5:0] alu_operation,
     input var logic [31:0] operand1,
     input var logic [31:0] operand2,
     output var logic [31:0] alu_result,

@@ -1,28 +1,11 @@
+/*
+    file: instruction_mem.sv
+    brief: Block ram to represent the instruction memory used by the CPU.
+*/
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 08/28/2024 01:45:46 PM
-// Design Name: 
-// Module Name: instruction_mem.sv
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 `include "../common/isa.svh"
 
 module InstructionMem(
-    input wire logic clk,
-    input wire logic rst_n,
     input var logic [31:0] pc,
     output var logic [31:0] instruction
 );

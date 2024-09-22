@@ -1,23 +1,8 @@
+/*
+    file: cpu_top.sv
+    brief: The top level module that connnects required modules to construct a RISC-V CPU
+*/
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 08/18/2024 01:45:46 PM
-// Design Name: 
-// Module Name: cpu_top.sv
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 `include "core/common/isa.svh"
 
 module RVCPU(
@@ -33,6 +18,14 @@ module RVCPU(
 
     // instruction memory
     var logic [31:0] instruction;
+
+    // instruction parser
+    var logic [6:0] opcode;
+    var logic [4:0] rd_addr;
+    var logic [4:0] rs1_addr;
+    var logic [4:0] rs2_addr;
+    var logic [2:0] funct3;
+    var logic [6:0] funct7;
     
     // control signals
     var logic regfile_wr_en;
@@ -42,17 +35,17 @@ module RVCPU(
     var logic mem_data_select;
     var logic mem_rd_en;
     var logic mem_wr_en;
-    var logic reg_b_select;
+    var logic reg_select_b;
     var logic [3:0] alu_select;
-    var logic [7:0] alu_operation;
+    var logic [5:0] alu_operation;
 
     // immediate generator
     var logic [31:0] imm_value;
     
     // ALU
-    var logic [31:0] reg_data_a;
+    var logic [31:0] alu_operand1;
     var logic [31:0] reg_data_b;
-    var logic [31:0] reg_data_x;
+    var logic [31:0] alu_operand2;
     var logic [31:0] alu_result;
 
     // memory stage
@@ -73,16 +66,22 @@ module RVCPU(
     );
 
     InstructionMem instruction_mem(
-        .clk(clk),
-        .rst_n(rst_n),
         .pc(pc),
         .instruction(instruction)
     );
 
+    InsructionParser instruction_parser(
+        .instruction(instruction),
+        .opcode(opcode),
+        .rd_addr(rd_addr),
+        .rs1_addr(rs1_addr),
+        .rs2_addr(rs2_addr),
+        .funct3(funct3),
+        .funct7(funct7)
+    );
+
     ControlSignals control_signals(
-        .clk(clk),
-        .rst_n(rst_n),
-        .opcode(instruction[6:0]),
+        .opcode(opcode),
         .regfile_wr_en(regfile_wr_en),
         .is_branch_instruction(is_branch_instruction),
         .is_jal_instruction(is_jal_instruction),
@@ -90,13 +89,11 @@ module RVCPU(
         .mem_data_select(mem_data_select),
         .mem_rd_en(mem_rd_en),
         .mem_wr_en(mem_wr_en),
-        .reg_b_select(reg_b_select),
+        .reg_select_b(reg_select_b),
         .alu_select(alu_select)
     );
 
     ImmGen imm_gen(
-        .clk(clk),
-        .rst_n(rst_n),
         .instruction(instruction),
         .imm_value(imm_value)
     );
@@ -105,33 +102,35 @@ module RVCPU(
         .clk(clk),
         .rst_n(rst_n),
         .regfile_wr_en(regfile_wr_en),
-        .instruction(instruction),
-        .reg_wr_data(writeback_result),
-        .reg_data_a(reg_data_a),
+        .rs1_addr(rs1_addr),
+        .rs2_addr(rs2_addr),
+        .wr_addr(rd_addr),
+        .wr_data(writeback_result),
+        .reg_data_a(alu_operand1),
         .reg_data_b(reg_data_b)
     );
 
     ALUOperand get_operand(
-        .reg_b_select(reg_b_select),
+        .reg_select_b(reg_select_b),
         .reg_data_b(reg_data_b),
         .imm_value(imm_value),
-        .reg_data_x(reg_data_x)
+        .alu_operand2_data(alu_operand2)
     );
 
     ALUControl alu_control(
-        .instruction(instruction),
+        .funct3(funct3),
+        .funct7(funct7),
+        .opcode(opcode),
         .alu_select(alu_select),
         .alu_operation(alu_operation)
     );
 
     ALU alu(
-        .clk(clk),
-        .rst_n(rst_n),
         .pc(pc),
         .is_branch_instruction(is_branch_instruction),
         .alu_operation(alu_operation),
-        .operand1(reg_data_a),
-        .operand2(reg_data_x),
+        .operand1(alu_operand1),
+        .operand2(alu_operand2),
         .alu_result(alu_result),
         .branch_taken(branch_taken),
         .jalr_address(jalr_address)
@@ -142,9 +141,9 @@ module RVCPU(
         .mem_rd_en(mem_rd_en),
         .mem_wr_en(mem_wr_en),
         .alu_operation(alu_operation),
-        .reg_data_b(reg_data_b),
-        .alu_result(alu_result),
-        .memory_data(memory_data)
+        .wr_data(reg_data_b),
+        .mem_addr(alu_result),
+        .mem_data(memory_data)
     );
 
     WriteBack write_back(

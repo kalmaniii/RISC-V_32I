@@ -1,36 +1,23 @@
+/*
+    file: alu_control.sv
+    brief: Drives "alu_operation" to provide the ALU context on what operation to perform.
+*/
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 08/30/2024 01:45:46 PM
-// Design Name: 
-// Module Name: alu_control.sv
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 `include "../common/isa.svh"
 
 module ALUControl(
-    input var logic [31:0] instruction,
+    input var logic [2:0] funct3,
+    input var logic [6:0] funct7,
+    input var logic [6:0] opcode,
     input var logic [3:0] alu_select,
-    output var logic [7:0] alu_operation
+    output var logic [5:0] alu_operation
 );
 
     always_comb begin
         unique case(alu_select)
             `ALU_SELECT_ARITHMETIC: begin: ARITHMETIC
-                if (instruction[`INDEX_FUNCT7] == `FUNCT7_MULTIPLY)
-                    unique case(instruction[`INDEX_FUNCT3])
+                if (funct7 == `FUNCT7_MULTIPLY)
+                    unique case(funct3)
                         `FUNCT3_MUL: alu_operation = `ALU_OPERATIONS_MUL;
                         `FUNCT3_MULH: alu_operation = `ALU_OPERATIONS_MULH;
                         `FUNCT3_MULSU: alu_operation = `ALU_OPERATIONS_MULSU;
@@ -42,12 +29,12 @@ module ALUControl(
                         default: alu_operation = `ALU_OPERATIONS_NOP;
                     endcase
                 else
-                    unique case(instruction[`INDEX_FUNCT3])
+                    unique case(funct3)
                         `FUNCT3_SUB,
                         `FUNCT3_ADD: begin
-                            if (instruction[`INDEX_OPCODE] == `OPCODE_ALUI)
+                            if (opcode == `OPCODE_ALUI)
                                 alu_operation = `ALU_OPERATIONS_ADD;
-                            else if (instruction[`INDEX_FUNCT7] == `FUNCT7_ADD)
+                            else if (funct7 == `FUNCT7_ADD)
                                 alu_operation = `ALU_OPERATIONS_ADD;
                             else
                                 alu_operation = `ALU_OPERATIONS_SUB;
@@ -58,7 +45,7 @@ module ALUControl(
                         `FUNCT3_SLL: alu_operation = `ALU_OPERATIONS_SLL;
                         `FUNCT3_SRL,
                         `FUNCT3_SRA: begin
-                            if (instruction[`INDEX_FUNCT7] == `FUNCT7_SRL)
+                            if (funct7 == `FUNCT7_SRL)
                                 alu_operation = `ALU_OPERATIONS_SRL;
                             else
                                 alu_operation = `ALU_OPERATIONS_SRA;
@@ -70,7 +57,7 @@ module ALUControl(
             end: ARITHMETIC
 
             `ALU_SELECT_LOAD: begin: LOAD
-                unique case(instruction[`INDEX_FUNCT3])
+                unique case(funct3)
                     `FUNCT3_LB: alu_operation = `ALU_OPERATIONS_LB; 
                     `FUNCT3_LH: alu_operation = `ALU_OPERATIONS_LH; 
                     `FUNCT3_LW: alu_operation = `ALU_OPERATIONS_LW; 
@@ -81,7 +68,7 @@ module ALUControl(
             end: LOAD
 
             `ALU_SELECT_STORE: begin: STORE
-                unique case(instruction[`INDEX_FUNCT3])
+                unique case(funct3)
                     `FUNCT3_SB: alu_operation = `ALU_OPERATIONS_SB; 
                     `FUNCT3_SH: alu_operation = `ALU_OPERATIONS_SH; 
                     `FUNCT3_SW: alu_operation = `ALU_OPERATIONS_SW; 
@@ -90,7 +77,7 @@ module ALUControl(
             end: STORE
 
             `ALU_SELECT_BRANCH: begin: BRANCH
-                unique case(instruction[`INDEX_FUNCT3])
+                unique case(funct3)
                     `FUNCT3_BEQ: alu_operation = `ALU_OPERATIONS_BEQ;
                     `FUNCT3_BNE: alu_operation = `ALU_OPERATIONS_BNE;
                     `FUNCT3_BLT: alu_operation = `ALU_OPERATIONS_BLT;

@@ -1,23 +1,8 @@
+/*
+    file: instruction_parser.sv
+    brief: Parses the instruction to its opcode, rd, rs1, rs2, funct3, and funct7 values. Helps improve readability.
+*/
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer:    
-// 
-// Create Date: 09/07/2024
-// Design Name: 
-// Module Name: instruction_parser.sv
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 `include "../common/isa.svh"
 
 module InsructionParser(
