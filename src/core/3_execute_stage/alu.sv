@@ -23,18 +23,38 @@ module ALU(
         
         unique case(alu_operation)
             // ARITHMETIC
-            `ALU_OPERATIONS_SUB: alu_result = operand1 - operand2;
-            `ALU_OPERATIONS_ADD: alu_result = operand1 + operand2;
+            `ALU_OPERATIONS_SUB: alu_result = $signed(operand1) - $signed(operand2);
+            `ALU_OPERATIONS_ADD: alu_result = $signed(operand1) + $signed(operand2);
             
             // MULTIPLY EXTENSION
-            `ALU_OPERATIONS_MUL: alu_result = (operand1 * operand2);
-            `ALU_OPERATIONS_MULH: alu_result = (operand1 * operand2);
-            `ALU_OPERATIONS_MULSU: alu_result = (operand1 * operand2);
-            `ALU_OPERATIONS_MULU: alu_result = (operand1 * operand2);
-            `ALU_OPERATIONS_DIV: alu_result = (operand1 / operand2);
-            `ALU_OPERATIONS_DIVU: alu_result = (operand1 / operand2);
-            `ALU_OPERATIONS_REM: alu_result = (operand1 % operand2);
-            `ALU_OPERATIONS_REMU: alu_result = (operand1 % operand2);
+            `ALU_OPERATIONS_MUL: alu_result = $signed(operand1) * $signed(operand2);
+            `ALU_OPERATIONS_MULH: alu_result = ($signed(operand1) * $signed(operand2)) >> 32;
+            `ALU_OPERATIONS_MULSU: alu_result = ($signed(operand1) * operand2) >> 32;
+            `ALU_OPERATIONS_MULU: alu_result = (operand1 * operand2) >> 32;
+            `ALU_OPERATIONS_DIV: begin
+                if (operand2 == 0) 
+                    alu_result = 0;
+                else
+                    alu_result = $signed(operand1) / $signed(operand2);
+            end
+            `ALU_OPERATIONS_DIVU: begin
+                if (operand2 == 0)
+                    alu_result = 0;
+                else
+                    alu_result = operand1 / operand2; 
+            end
+            `ALU_OPERATIONS_REM: begin
+                if (operand2 == 0)
+                    alu_result = 0;
+                else
+                    alu_result = $signed(operand1) % $signed(operand2); 
+            end
+            `ALU_OPERATIONS_REMU: begin
+                if (operand2 == 0)
+                    alu_result = 0;
+                else
+                    alu_result = operand1 % operand2; 
+            end
 
             // LOGICAL
             `ALU_OPERATIONS_OR: alu_result = operand1 | operand2;
@@ -45,8 +65,8 @@ module ALU(
             `ALU_OPERATIONS_SLL: alu_result = operand1 << operand2[4:0];
             `ALU_OPERATIONS_SRL: alu_result = operand1 >> operand2[4:0];
             `ALU_OPERATIONS_SRA: alu_result = $signed(operand1) >>> operand2[4:0];
-            `ALU_OPERATIONS_SLT: alu_result = (operand1 < operand2) ? 1:0;
-            `ALU_OPERATIONS_SLTU: alu_result = (operand1 < operand2) ? 32'd1 : 32'd0;
+            `ALU_OPERATIONS_SLT: alu_result = $signed(operand1) < $signed(operand2) ? 32'd1:32'd0;
+            `ALU_OPERATIONS_SLTU: alu_result = operand1 < operand2 ? 32'd1:32'd0;
 
             // LOAD
             `ALU_OPERATIONS_LB, 
