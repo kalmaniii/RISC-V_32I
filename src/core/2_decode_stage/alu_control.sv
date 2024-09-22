@@ -8,7 +8,6 @@
 module ALUControl(
     input var logic [2:0] funct3,
     input var logic [6:0] funct7,
-    input var logic [6:0] opcode,
     input var logic [3:0] alu_select,
     output var logic [5:0] alu_operation
 );
@@ -32,12 +31,10 @@ module ALUControl(
                     unique case(funct3)
                         `FUNCT3_SUB,
                         `FUNCT3_ADD: begin
-                            if (opcode == `OPCODE_ALUI)
-                                alu_operation = `ALU_OPERATIONS_ADD;
-                            else if (funct7 == `FUNCT7_ADD)
-                                alu_operation = `ALU_OPERATIONS_ADD;
-                            else
+                            if (funct7 == `FUNCT7_SUB)
                                 alu_operation = `ALU_OPERATIONS_SUB;
+                            else
+                                alu_operation = `ALU_OPERATIONS_ADD;
                         end
                         `FUNCT3_OR: alu_operation = `ALU_OPERATIONS_OR;
                         `FUNCT3_XOR: alu_operation = `ALU_OPERATIONS_XOR;

@@ -120,7 +120,6 @@ module RVCPU(
     ALUControl alu_control(
         .funct3(funct3),
         .funct7(funct7),
-        .opcode(opcode),
         .alu_select(alu_select),
         .alu_operation(alu_operation)
     );
