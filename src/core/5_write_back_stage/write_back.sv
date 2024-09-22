@@ -16,14 +16,7 @@ module WriteBack(
     // WRITE BACK RESULT
     always_comb begin
         if (mem_data_select)
-            unique case(alu_operation)
-                `ALU_OPERATIONS_LB,
-                `ALU_OPERATIONS_LBU: writeback_result = {24'b0, data_result[7:0]};
-                `ALU_OPERATIONS_LH,
-                `ALU_OPERATIONS_LHU: writeback_result = {16'b0, data_result[15:0]};
-                `ALU_OPERATIONS_LW: writeback_result = data_result;
-                default: writeback_result = data_result;
-            endcase
+            writeback_result = data_result;
         else
             writeback_result = alu_result;
     end
