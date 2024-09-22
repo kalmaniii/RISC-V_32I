@@ -66,7 +66,7 @@ module RVCPU(
     );
 
     InstructionMem instruction_mem(
-        .pc(pc),
+        .pc(pc[31:2]),
         .instruction(instruction)
     );
 
