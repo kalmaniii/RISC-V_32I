@@ -148,7 +148,6 @@ module RVCPU(
 
     WriteBack write_back(
         .mem_data_select(mem_data_select),
-        .alu_operation(alu_operation),
         .alu_result(alu_result),
         .data_result(memory_data),
         .writeback_result(writeback_result)

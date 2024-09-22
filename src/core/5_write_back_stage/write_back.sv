@@ -7,7 +7,6 @@
 
 module WriteBack(
     input var logic mem_data_select,
-    input var logic [5:0] alu_operation,
     input var logic [31:0] alu_result,
     input var logic [31:0] data_result,
     output var logic [31:0] writeback_result
